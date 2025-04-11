@@ -1,2 +1,2 @@
 # nook-attendance-tracker-api
-Repository for Nook Attenadance Tracker  API
+![LSCS | RND](https://img.shields.io/badge/LSCS-RND-brightgreen)
