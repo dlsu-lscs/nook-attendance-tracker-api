@@ -1,0 +1,14 @@
+{
+  "name": "nook-attendance-tracker-api",
+  "version": "1.0.0",
+  "description": "![LSCS | RND](https://img.shields.io/badge/LSCS-RND-brightgreen)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
