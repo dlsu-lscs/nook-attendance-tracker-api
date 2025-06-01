@@ -33,13 +33,15 @@ export const tapOfficer = async (req, res) => {
   }
 }
 
-export const getNookAttendance = async (res) => {
+export const getNookAttendance = async (req, res) => {
   try {
     const attendance = await attendanceService.getNookAttendance()
 
+    console.log(attendance)
+
     return res
-      .stats(200)
-      .jdon({ message: 'Fetched Attendance', data: attendance })
+      .status(200)
+      .json({ message: 'Fetched Attendance', data: attendance })
   } catch (err) {
     console.error('Error handling tap:', err)
     return res.status(500).json({ message: 'Internal server error' })
