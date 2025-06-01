@@ -25,12 +25,13 @@ export const tapOfficer = async (req, res) => {
     )
 
     const attendance = await getActiveAttendance(idNum)
+
     if (attendance) {
       await tapOut(attendance.attendance_id)
-      return res.json({ message: 'Tap out successful' })
+      return res.json({ message: `${officer.full_name} has left the nook` })
     } else {
       await tapIn(idNum)
-      return res.json({ message: 'Tap in successful' })
+      return res.json({ message: `${officer.full_name} has entered the nook` })
     }
   } catch (err) {
     console.error('Error handling tap:', err)
