@@ -8,7 +8,7 @@ export const getOfficer = async (idNum) => {
       { id: idNum },
       {
         headers: {
-          Authorization: `Bearer <API-KEY>`,
+          Authorization: `Bearer ${process.env.API_TOKEN}`,
           'Content-Type': 'application/json',
         },
       }
