@@ -32,18 +32,3 @@ export const tapOfficer = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
-
-export const getNookAttendance = async (req, res) => {
-  try {
-    const attendance = await attendanceService.getNookAttendance()
-
-    console.log(attendance)
-
-    return res
-      .status(200)
-      .json({ message: 'Fetched Attendance', data: attendance })
-  } catch (err) {
-    console.error('Error handling tap:', err)
-    return res.status(500).json({ message: 'Internal server error' })
-  }
-}

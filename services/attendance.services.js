@@ -11,35 +11,33 @@ export const getActiveAttendance = async (officerId) => {
   return rows.length > 0 ? rows[0] : null
 }
 
-export const getNookAttendance = async () => {
+export const getOfficerAttendance = async () => {
   const query = `
-    SELECT 
-      lscs.full_name, 
-      lscs.committee_name,
-      ROUND(SUM(TIMESTAMPDIFF(SECOND, attendance.tap_in_time, attendance.tap_out_time)) / 3600, 2) AS hours_rendered
-    FROM attendance
-    INNER JOIN lscsOfficers AS lscs ON attendance.officer_id = lscs.officer_id
-    WHERE attendance.tap_out_time IS NOT NULL
-    GROUP BY lscs.full_name, lscs.committee_name
-    ORDER BY hours_rendered DESC;
-  `
+  SELECT 
+    o.full_name,
+    o.committee_name,
+    ROUND(SUM(TIMESTAMPDIFF(SECOND, a.tap_in_time, a.tap_out_time)) / 3600, 2) AS hours_rendered
+  FROM attendance a
+  INNER JOIN officers o ON a.officer_id = o.officer_id
+  WHERE a.tap_out_time IS NOT NULL
+  GROUP BY o.full_name, o.committee_name
+  ORDER BY hours_rendered DESC`
 
   const [rows] = await db.execute(query)
   return rows
 }
 
-export async function tapIn(officerId) {
-  await db.query(
-    `INSERT INTO attendance (officer_id, tap_in_time)
-     VALUES (?, NOW())`,
-    [officerId]
-  )
-}
+export const getCommitteeAttendance = async () => {
+  const query = `
+  SELECT 
+    o.committee_name, 
+    ROUND(SUM(TIMESTAMPDIFF(SECOND, a.tap_in_time, a.tap_out_time)) / 3600, 2) AS hours_rendered
+  FROM attendance a 
+  INNER JOIN officers AS o ON a.officer_id = o.officer_id
+  WHERE a.tap_out_time IS NOT NULL
+  GROUP BY o.committee_name
+  ORDER BY hours_rendered DESC`
 
-export async function tapOut(attendanceId) {
-  await db.query(
-    `UPDATE attendance SET tap_out_time = NOW()
-     WHERE attendance_id = ?`,
-    [attendanceId]
-  )
+  const [rows] = await db.execute(query)
+  return rows
 }
