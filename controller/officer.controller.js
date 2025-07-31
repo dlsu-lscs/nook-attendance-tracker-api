@@ -8,7 +8,7 @@ export const tapOfficer = async (req, res) => {
     let officer = await officerService.getOfficer(idNum)
 
     if (!officer) {
-      res.status(404).json({ message: 'No Officer Found' })
+      return res.status(404).json({ message: 'No Officer Found' })
     }
 
     await officerService.addOfficer(
