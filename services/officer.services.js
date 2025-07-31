@@ -5,7 +5,7 @@ export const getOfficer = async (idNum) => {
   try {
     const officer = await axios.post(
       'https://auth.app.dlsu-lscs.org/member-id',
-      { id: idNum },
+      { id: parseInt(idNum) },
       {
         headers: {
           Authorization: `Bearer ${process.env.API_TOKEN}`,

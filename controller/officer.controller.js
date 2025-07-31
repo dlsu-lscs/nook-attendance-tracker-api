@@ -5,7 +5,7 @@ export const tapOfficer = async (req, res) => {
   const { idNum } = req.body
 
   try {
-    let officer = await officerService.getOfficer(idNum)
+    let officer = await officerService.getOfficer(parseInt(idNum))
 
     if (!officer) {
       return res.status(404).json({ message: 'No Officer Found' })
@@ -21,10 +21,10 @@ export const tapOfficer = async (req, res) => {
     const attendance = await attendanceService.getActiveAttendance(idNum)
 
     if (attendance) {
-      await attendanceService.tapOut(attendance.attendance_id)
+      await officerService.tapOut(attendance.attendance_id)
       return res.json({ message: `${officer.full_name} has left the nook` })
     } else {
-      await attendanceService.tapIn(idNum)
+      await officerService.tapIn(idNum)
       return res.json({ message: `${officer.full_name} has entered the nook` })
     }
   } catch (err) {
