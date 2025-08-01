@@ -1,16 +1,28 @@
-import axios from 'axios'
-import { db } from '../config/db.js'
+import axios from "axios";
+import { db } from "../config/db.js";
 
-export const getActiveAttendance = async (officerId) => {
+export const getGivenAttendance = async (officerId) => {
   const [rows] = await db.query(
     `SELECT attendance_id FROM attendance
      WHERE officer_id = ? AND tap_out_time IS NULL
      ORDER BY tap_in_time DESC LIMIT 1`,
     [officerId]
-  )
-  return rows.length > 0 ? rows[0] : null
-}
+  );
+  return rows.length > 0 ? rows[0] : null;
+};
 
+export const getActiveOfficers = async () => {
+  const query = `
+  SELECT 
+    o.full_name,
+    o.committee_name
+  FROM attendance a
+  INNER JOIN officers o ON a.officer_id = o.officer_id
+  GROUP BY o.full_name, o.committee_name
+  `;
+  const [rows] = await db.execute(query);
+  return rows;
+};
 export const getOfficerAttendance = async () => {
   const query = `
   SELECT 
@@ -21,11 +33,11 @@ export const getOfficerAttendance = async () => {
   INNER JOIN officers o ON a.officer_id = o.officer_id
   WHERE a.tap_out_time IS NOT NULL
   GROUP BY o.full_name, o.committee_name
-  ORDER BY hours_rendered DESC`
+  ORDER BY hours_rendered DESC`;
 
-  const [rows] = await db.execute(query)
-  return rows
-}
+  const [rows] = await db.execute(query);
+  return rows;
+};
 
 export const getCommitteeAttendance = async () => {
   const query = `
@@ -36,8 +48,8 @@ export const getCommitteeAttendance = async () => {
   INNER JOIN officers AS o ON a.officer_id = o.officer_id
   WHERE a.tap_out_time IS NOT NULL
   GROUP BY o.committee_name
-  ORDER BY hours_rendered DESC`
+  ORDER BY hours_rendered DESC`;
 
-  const [rows] = await db.execute(query)
-  return rows
-}
+  const [rows] = await db.execute(query);
+  return rows;
+};

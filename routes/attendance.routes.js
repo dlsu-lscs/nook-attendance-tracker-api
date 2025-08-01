@@ -1,8 +1,9 @@
-import express from 'express'
-import * as attendanceController from '../controller/attendance.controller.js'
-const router = express.Router()
+import express from "express";
+import * as attendanceController from "../controller/attendance.controller.js";
+const router = express.Router();
 
-router.get('/officer/', attendanceController.getOfficerAttendance)
-router.get('/committee/', attendanceController.getCommitteeAttendance)
+router.get("/officer/active", attendanceController.getActiveOfficers);
+router.get("/officer/", attendanceController.getOfficerAttendance);
+router.get("/committee/", attendanceController.getCommitteeAttendance);
 
-export default router
+export default router;
